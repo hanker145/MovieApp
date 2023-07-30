@@ -42,7 +42,7 @@ export default function PrimarySearchAppBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
   const handleLogout = () => {
-    handleMenuClose(); 
+    handleMenuClose(); //menu close before signout so that login won't pop up.
     auth.signout();
   };
   const menuId = "primary-search-account-menu";
@@ -130,7 +130,7 @@ export default function PrimarySearchAppBar() {
       <MenuItem component={Link} to="/form">
         <IconButton
           size="large"
-        
+          //cool styling ui props
           aria-label="account of current user"
           aria-controls={menuId}
           disableRipple={true}
@@ -178,6 +178,7 @@ export default function PrimarySearchAppBar() {
             />
             <IconButton
               size="large"
+              //cool styling ui props
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"

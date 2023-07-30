@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import PaginationItem from "@mui/material/PaginationItem";
 import Divider from "@mui/material/Divider";
 import Skeleton from "@mui/material/Skeleton";
+
 function TrendingCardGroup({ trendingList, cutInitial, loadingTrending }) {
   const [cutList, setCutList] = useState();
   const [copiedList, setcopiedList] = useState([]);
@@ -45,21 +46,26 @@ function TrendingCardGroup({ trendingList, cutInitial, loadingTrending }) {
         <PaginationItem onClick={() => setCutList(handleList())} type="next" />
       </Stack>
       <Divider />
-      <Grid container direction="row" spacing={5} mt={2}>
+      <Grid
+        container
+        sx={{ flexDirection: { xs: "column", sm: "row" } }}
+        spacing={5}
+        mt={2}
+      >
         {loadingTrending
           ? placeholder.map((item) => (
-              <Grid key={item.id} item xs={6} sm={4} md={3}>
+              <Grid key={item.id} item xs={12} sm={4} md={3}>
                 {detailSkeleton}
               </Grid>
             ))
           : cutList
           ? cutList.map((item) => (
-              <Grid key={item.id} item xs={6} sm={4} md={3}>
+              <Grid key={item.id} item xs={12} sm={4} md={3}>
                 <MCard item={item} />
               </Grid>
             ))
           : cutInitial?.map((item) => (
-              <Grid key={item.id} item xs={6} sm={4} md={3}>
+              <Grid key={item.id} item xs={12} sm={4} md={3}>
                 <MCard item={item} />
               </Grid>
             ))}

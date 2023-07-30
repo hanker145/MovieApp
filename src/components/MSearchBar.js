@@ -42,6 +42,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 function MSearchBar() {
+
   return (
     <Search>
       <SearchIconWrapper>
@@ -50,6 +51,7 @@ function MSearchBar() {
       <StyledInputBase
         placeholder="Search…"
         inputProps={{ "aria-label": "search" }}
+
       />
     </Search>
   );

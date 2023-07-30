@@ -6,9 +6,7 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 
 
-
 function FavoritePage() {
-  
   let list = JSON.parse(localStorage.getItem("fav"));
 
   return (

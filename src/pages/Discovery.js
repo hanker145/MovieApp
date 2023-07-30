@@ -10,10 +10,12 @@ import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import { Link, useParams } from "react-router-dom";
 import Skeleton from "@mui/material/Skeleton";
-
+//APIKEY TRONG ENV
 function DiscoveryPage() {
   const [loading, setLoading] = useState();
   const [movieList, setMovieList] = useState([]);
+  const [totalPages, setTotalPages] = useState();
+
   const { pageId } = useParams();
 
   useEffect(() => {
@@ -24,6 +26,7 @@ function DiscoveryPage() {
           `discover/movie?api_key=${API_KEY}&page=${pageId}&language=en-US`
         );
         setMovieList(res.data.results);
+        setTotalPages(res.data.total_pages);
         setLoading(false);
       } catch (e) {
         console.log(e.message);
@@ -38,6 +41,9 @@ function DiscoveryPage() {
       <Skeleton variant="rectangular" width="100%" height={300} />
     </Stack>
   );
+
+  const currentPageCount = Math.ceil(totalPages / 20);
+
   return (
     <>
       <Typography variant="h5" mb={2}>
@@ -60,7 +66,7 @@ function DiscoveryPage() {
       </Grid>
       <Pagination
         size="large"
-        count={10}
+        count={currentPageCount}
         sx={{ display: "flex", justifyContent: "center", margin: "2rem" }}
         renderItem={(item) => (
           <PaginationItem

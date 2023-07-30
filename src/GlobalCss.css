@@ -16,4 +16,8 @@ body {
 .card:hover .recommend_icon {
   color: gainsboro;
 }
+/* how to hover on parent and child have the effects */
 
+@media screen (max-width: 450px) {
+  
+}

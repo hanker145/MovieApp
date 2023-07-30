@@ -26,19 +26,19 @@ export default function Form() {
     navigate(-1);
   }
   const defaultValues = {
-    email: "AnythingYouLike",
-    password: "Idunno",
+    email: "Iguessitworked",
+    password: "Maybenot",
     remember: true,
   };
   const methods = useForm({ defaultValues });
   const {
     handleSubmit,
-
     formState: { errors, isSubmitting },
   } = methods;
   const [showPassword, setShowPassword] = useState(false);
   const onSubmit = (data) => {
     auth.signin(data.email, () => {
+
       navigate(from, { replace: true });
     });
   };

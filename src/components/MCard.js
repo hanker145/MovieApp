@@ -11,11 +11,23 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Link } from "react-router-dom";
 import "../GlobalCss.css";
 
-export default function MCard({ item }) {
-
+export default function MCard({ item, handleClose }) {
   return (
-    <Card className="card" sx={{ width: 200, borderRadius: "3px" }}>
-      <CardActionArea LinkComponent={Link} to={`/movie/${item.id}`}>
+    <Card
+      className="card"
+      sx={{
+        width: 200,
+        borderRadius: "3px",
+        margin: "0 auto",
+      }}
+    >
+      <CardActionArea
+        LinkComponent={Link}
+        to={`/movie/${item.id}`}
+        onClick={() => {
+          handleClose && handleClose();
+        }}
+      >
         <Box
           display="flex"
           flexDirection="column"

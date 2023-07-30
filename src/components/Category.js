@@ -11,6 +11,9 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemButton from "@mui/material/ListItemButton";
 import Skeleton from "@mui/material/Skeleton";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import Pagination from "@mui/material/Pagination";
+import PaginationItem from "@mui/material/PaginationItem";
+
 const yearList = [
   { id: 1999, label: "1999" },
   { id: 1998, label: "1998" },
@@ -27,6 +30,8 @@ export default function Category() {
   const [movieList, setMovieList] = React.useState([]);
   const [genreId, setGenreId] = React.useState();
   const [yearId, setYearId] = React.useState(1999);
+  const [page, setPage] = React.useState(1);
+  const [totalPages, setTotalPages] = React.useState(10);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,6 +48,7 @@ export default function Category() {
     };
     fetchData();
   }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       let url = `discover/movie?api_key=${API_KEY}&language=en-US&append_to_response=videos`;
@@ -50,13 +56,19 @@ export default function Category() {
         setLoading(true);
         if (genreId) {
           setYearId(null);
-          const res = await apiService.get(`${url}&with_genres=${genreId}`);
+          const res = await apiService.get(
+            `${url}&with_genres=${genreId}&page=${page}`
+          );
           setMovieList(res.data.results);
+          setTotalPages(res.data.total_pages);
         }
         if (yearId) {
           setGenreId(null);
-          const res = await apiService.get(`${url}&year=${yearId}`);
+          const res = await apiService.get(
+            `${url}&year=${yearId}&page=${page}`
+          );
           setMovieList(res.data.results);
+          setTotalPages(res.data.total_pages);
         }
 
         setLoading(false);
@@ -65,7 +77,9 @@ export default function Category() {
       }
     };
     fetchData();
-  }, [genreId, yearId]);
+  }, [genreId, yearId, page]);
+
+  const currentPageCount = Math.ceil(totalPages / 20);
 
   const placeholder = [0, 1, 2, 3];
   const detailSkeleton = (
@@ -81,9 +95,12 @@ export default function Category() {
       </Typography>
 
       <Divider />
-      <Stack flexDirection="row" width="100%" justifyContent="space-between">
-        <Stack minWidth="150px" width={{ xs: "10%" }}>
-          
+      <Stack
+        width="100%"
+        justifyContent="space-between"
+        sx={{ flexDirection: { xs: "column", sm: "row" } }}
+      >
+        <Stack minWidth="150px" width={{ xs: "100%", sm: "10%" }}>
           <Box>
             <ListItemButton
               alignItems="flex-start"
@@ -182,7 +199,6 @@ export default function Category() {
               />
               <KeyboardArrowDownIcon
                 sx={{
-                  // mr: -1,
                   opacity: 0,
                   transform: openYear ? "rotate(-180deg)" : "rotate(0)",
                   transition: "0.2s",
@@ -209,18 +225,33 @@ export default function Category() {
           </Box>
         </Stack>
 
-        <Grid container direction="row" spacing={2} mt={2}>
-          {loading
-            ? placeholder.map((item) => (
-                <Grid item xs={10} sm={6} md={4} lg={3}>
-                  {detailSkeleton}
-                </Grid>
-              ))
-            : movieList.map((item) => (
-                <Grid item xs={10} sm={6} md={4} lg={3}>
-                  <MCard key={item.id} item={item} />
-                </Grid>
-              ))}
+        <Grid
+          container
+          direction="row"
+          spacing={2}
+          mt={2}
+          justifyContent={{ sm: "center" }}
+        >
+          <>
+            {loading
+              ? placeholder.map((item) => (
+                  <Grid item xs={10} sm={6} md={4} lg={3}>
+                    {detailSkeleton}
+                  </Grid>
+                ))
+              : movieList.map((item) => (
+                  <Grid item xs={10} sm={6} md={4} lg={3}>
+                    <MCard key={item.id} item={item} />
+                  </Grid>
+                ))}
+            <Pagination
+              size="large"
+              count={currentPageCount}
+              sx={{ display: "flex", justifyContent: "center", margin: "2rem" }}
+              onChange={(event, pageNumber) => setPage(pageNumber)}
+              renderItem={(item) => <PaginationItem {...item} />}
+            />
+          </>
         </Grid>
       </Stack>
     </>

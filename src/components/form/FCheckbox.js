@@ -13,7 +13,6 @@ function FCheckbox({ name, label, ...other }) {
           render={({ field }) => <Checkbox {...field} checked={field.value} />}
         />
       }
-  
     />
   );
 }
